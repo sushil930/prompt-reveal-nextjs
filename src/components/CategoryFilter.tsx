@@ -8,10 +8,14 @@ interface CategoryFilterProps {
 
 const CategoryFilter = ({ categories, selectedCategory, onSelectCategory }: CategoryFilterProps) => {
   return (
-    <div className="flex justify-center space-x-4 my-8">
+    <div className="flex flex-wrap justify-center gap-3">
       <button
         onClick={() => onSelectCategory('All')}
-        className={`px-4 py-2 rounded-md ${selectedCategory === 'All' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
+          selectedCategory === 'All' 
+            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50' 
+            : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-gray-700'
+        }`}
       >
         All
       </button>
@@ -19,7 +23,11 @@ const CategoryFilter = ({ categories, selectedCategory, onSelectCategory }: Cate
         <button
           key={category}
           onClick={() => onSelectCategory(category)}
-          className={`px-4 py-2 rounded-md ${selectedCategory === category ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
+            selectedCategory === category 
+              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50' 
+              : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-gray-700'
+          }`}
         >
           {category}
         </button>
