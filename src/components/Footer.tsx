@@ -2,54 +2,72 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <footer className="bg-black border-t border-gray-800 mt-20">
-      <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">PR</span>
+    <footer className="bg-white border-t border-gray-200">
+      <div className="container mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-12">
+          {/* Brand */}
+          <div className="md:col-span-4 space-y-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">P</span>
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Prompt Reveal
+              <span className="text-xl font-bold text-black tracking-tight">
+                PromptReveal
               </span>
             </div>
-            <p className="text-gray-400 text-sm">
-              Discover studio-quality AI-generated art. Reveal prompts, modify them, and create your own masterpieces.
+            <p className="text-gray-600 text-sm font-light leading-relaxed max-w-xs">
+              Discover, copy, and create with thousands of curated AI art prompts.
             </p>
           </div>
           
-          <div>
-            <h3 className="text-white font-semibold mb-4">Categories</h3>
-            <ul className="space-y-2">
-              <li><Link href="#fashion" className="text-gray-400 hover:text-white transition-colors">Fashion</Link></li>
-              <li><Link href="#products" className="text-gray-400 hover:text-white transition-colors">Products</Link></li>
-              <li><Link href="#portraits" className="text-gray-400 hover:text-white transition-colors">Portraits</Link></li>
+          {/* Links */}
+          <div className="md:col-span-2">
+            <h3 className="text-black font-semibold mb-4 text-sm tracking-wide">Product</h3>
+            <ul className="space-y-3">
+              <li><Link href="#gallery" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Gallery</Link></li>
+              <li><Link href="#categories" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Categories</Link></li>
+              <li><Link href="#pricing" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Pricing</Link></li>
             </ul>
           </div>
           
-          <div>
-            <h3 className="text-white font-semibold mb-4">AI Models</h3>
-            <ul className="space-y-2">
-              <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Midjourney</Link></li>
-              <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Stable Diffusion</Link></li>
-              <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">DALL-E</Link></li>
-              <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Flux</Link></li>
+          <div className="md:col-span-2">
+            <h3 className="text-black font-semibold mb-4 text-sm tracking-wide">Resources</h3>
+            <ul className="space-y-3">
+              <li><Link href="#" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Documentation</Link></li>
+              <li><Link href="#" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Tutorials</Link></li>
+              <li><Link href="#" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Blog</Link></li>
             </ul>
           </div>
           
-          <div>
-            <h3 className="text-white font-semibold mb-4">Connect</h3>
-            <ul className="space-y-2">
-              <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Twitter</Link></li>
-              <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Instagram</Link></li>
-              <li><Link href="#" className="text-gray-400 hover:text-white transition-colors">Discord</Link></li>
+          <div className="md:col-span-2">
+            <h3 className="text-black font-semibold mb-4 text-sm tracking-wide">Company</h3>
+            <ul className="space-y-3">
+              <li><Link href="#" className="text-gray-600 hover:text-black transition-colors text-sm font-light">About</Link></li>
+              <li><Link href="#" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Careers</Link></li>
+              <li><Link href="#" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Contact</Link></li>
+            </ul>
+          </div>
+
+          <div className="md:col-span-2">
+            <h3 className="text-black font-semibold mb-4 text-sm tracking-wide">Connect</h3>
+            <ul className="space-y-3">
+              <li><Link href="#" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Twitter</Link></li>
+              <li><Link href="#" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Instagram</Link></li>
+              <li><Link href="#" className="text-gray-600 hover:text-black transition-colors text-sm font-light">Discord</Link></li>
             </ul>
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-          <p className="text-gray-400 text-sm">&copy; 2025 Prompt Reveal. All rights reserved.</p>
+        {/* Bottom */}
+        <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-gray-500 text-sm font-light">
+            © 2025 PromptReveal. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            <Link href="#" className="text-gray-500 hover:text-black transition-colors text-sm font-light">Privacy</Link>
+            <Link href="#" className="text-gray-500 hover:text-black transition-colors text-sm font-light">Terms</Link>
+            <Link href="#" className="text-gray-500 hover:text-black transition-colors text-sm font-light">Cookies</Link>
+          </div>
         </div>
       </div>
     </footer>
