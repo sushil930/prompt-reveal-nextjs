@@ -29,7 +29,7 @@ const Header = () => {
             <ul className="flex items-center space-x-1">
               <li>
                 <Link 
-                  href="#gallery" 
+                  href="/gallery" 
                   className="text-gray-600 hover:text-black px-4 py-2 rounded-full hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
                 >
                   Gallery
@@ -37,7 +37,7 @@ const Header = () => {
               </li>
               <li>
                 <Link 
-                  href="#categories" 
+                  href="/categories" 
                   className="text-gray-600 hover:text-black px-4 py-2 rounded-full hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
                 >
                   Categories
@@ -99,14 +99,14 @@ const Header = () => {
         >
           <nav className="flex flex-col space-y-2 pb-4">
             <Link 
-              href="#gallery" 
+              href="/gallery" 
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-gray-600 hover:text-black px-4 py-3 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
             >
               Gallery
             </Link>
             <Link 
-              href="#categories" 
+              href="/categories" 
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-gray-600 hover:text-black px-4 py-3 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
             >
