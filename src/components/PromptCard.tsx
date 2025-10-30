@@ -1,19 +1,70 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import PromptDetailModal from './PromptDetailModal';
 
+const GENERATOR_LABELS: Record<string, string> = {
+  MIDJOURNEY: 'Midjourney',
+  DALLE: 'DALL·E',
+  STABLE_DIFFUSION: 'Stable Diffusion',
+  FLUX: 'Flux',
+  CHAT_GPT: 'ChatGPT',
+  LEONARDO_AI: 'Leonardo AI',
+  ADOBE_FIREFLY: 'Adobe Firefly',
+};
+
 interface PromptCardProps {
-  imageSrc: string;
+  id: string;
+  title: string;
   prompt: string;
+  negativePrompt?: string | null;
   category: string;
   generator: string;
+  imageSrc: string;
+  fullImageSrc: string;
+  blurDataUrl?: string | null;
+  likesCount: number;
+  savesCount: number;
+  viewsCount: number;
+  tags?: string[];
+  createdAt?: string;
+  createdBy?: {
+    name?: string | null;
+  } | null;
 }
 
-const PromptCard = ({ imageSrc, prompt, category, generator }: PromptCardProps) => {
+const PromptCard = ({
+  title,
+  prompt,
+  negativePrompt,
+  category,
+  generator,
+  imageSrc,
+  fullImageSrc,
+  blurDataUrl,
+  likesCount,
+  savesCount,
+  viewsCount,
+  tags = [],
+  createdAt,
+  createdBy,
+}: PromptCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const generatorLabel = useMemo(
+    () => GENERATOR_LABELS[generator] ?? generator.replace(/_/g, ' '),
+    [generator]
+  );
+
+  const metadataChips = useMemo(() => {
+    const baseChips = [category, generatorLabel];
+    const tagChips = tags.slice(0, 2);
+    return [...baseChips, ...tagChips];
+  }, [category, generatorLabel, tags]);
+
+  const creatorName = createdBy?.name || 'Community Member';
 
   const handleViewDetails = () => {
     setIsModalOpen(true);
@@ -25,20 +76,21 @@ const PromptCard = ({ imageSrc, prompt, category, generator }: PromptCardProps) 
 
   return (
     <>
-      <div 
+      <div
         className="group relative bg-white rounded-3xl overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
       {/* Image Container - 4:5 Aspect Ratio */}
       <div className="relative w-full aspect-[4/5] overflow-hidden">
-        <Image 
-          src={imageSrc} 
-          alt={prompt} 
-          width={400}
-          height={500}
-          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-90"
-          unoptimized
+        <Image
+          src={imageSrc}
+          alt={title}
+          fill
+          sizes="(min-width: 1536px) 18vw, (min-width: 1280px) 20vw, (min-width: 1024px) 24vw, (min-width: 640px) 45vw, 90vw"
+          className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-90"
+          placeholder={blurDataUrl ? 'blur' : 'empty'}
+          blurDataURL={blurDataUrl || undefined}
         />
         
         {/* Pinterest-style Overlay */}
@@ -59,18 +111,24 @@ const PromptCard = ({ imageSrc, prompt, category, generator }: PromptCardProps) 
 
           {/* Bottom Content */}
           <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform transition-all duration-500" style={{ transform: isHovered ? 'translateY(0)' : 'translateY(30px)', opacity: isHovered ? 1 : 0 }}>
+            <h3 className="text-lg font-semibold leading-tight mb-2 drop-shadow-lg line-clamp-2">
+              {title}
+            </h3>
             <p className="text-sm font-light leading-relaxed line-clamp-2 mb-4 drop-shadow-lg">
               {prompt}
             </p>
-            
+            <p className="text-xs text-white/80 mb-4 drop-shadow-lg">
+              By {creatorName}
+              {createdAt ? ` · ${new Date(createdAt).toLocaleDateString()}` : ''}
+            </p>
+
             {/* Tags */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className="text-xs px-3 py-1.5 bg-white/15 backdrop-blur-xl rounded-full border border-white/30 font-medium">
-                {category}
-              </span>
-              <span className="text-xs px-3 py-1.5 bg-white/15 backdrop-blur-xl rounded-full border border-white/30 font-medium">
-                {generator}
-              </span>
+              {metadataChips.map((chip) => (
+                <span key={chip} className="text-xs px-3 py-1.5 bg-white/15 backdrop-blur-xl rounded-full border border-white/30 font-medium">
+                  {chip}
+                </span>
+              ))}
             </div>
 
             {/* Action Button */}
@@ -95,10 +153,19 @@ const PromptCard = ({ imageSrc, prompt, category, generator }: PromptCardProps) 
     <PromptDetailModal
       isOpen={isModalOpen}
       onClose={handleCloseModal}
-      imageSrc={imageSrc}
+      imageSrc={fullImageSrc}
+      blurDataUrl={blurDataUrl || undefined}
+      title={title}
       prompt={prompt}
+      negativePrompt={negativePrompt}
       category={category}
-      generator={generator}
+  generator={generatorLabel}
+      likesCount={likesCount}
+      savesCount={savesCount}
+      viewsCount={viewsCount}
+      tags={tags}
+      createdAt={createdAt}
+      createdBy={creatorName}
     />
     </>
   );

@@ -1,49 +1,63 @@
-export const prompts = [
-    {
-      id: 1,
-      imageSrc: '/images/fashion-1.jpg',
-      prompt: 'A high-fashion model on a runway in a futuristic gown made of iridescent fabric, studio lighting, 8k, hyperrealistic.',
-      category: 'Fashion',
-      generator: 'Midjourney',
-    },
-    {
-      id: 2,
-      imageSrc: '/images/product-1.jpg',
-      prompt: 'A sleek, minimalist smartwatch on a black marble surface, with a soft, diffused light source from the side. Product photography, 4k.',
-      category: 'Products',
-      generator: 'Stable Diffusion',
-    },
-    {
-      id: 3,
-      imageSrc: '/images/portrait-1.jpg',
-      prompt: 'A dramatic portrait of a man with a beard, looking away from the camera, with a single light source creating strong shadows. Rembrandt style.',
-      category: 'Portraits',
-      generator: 'DALL-E 3',
-    },
-    {
-        id: 4,
-        imageSrc: '/images/fashion-2.jpg',
-        prompt: 'A model wearing a vibrant, floral-patterned dress in a lush garden setting. The sun is setting, casting a warm, golden glow. Shot on a Canon 5D Mark IV.',
-        category: 'Fashion',
-        generator: 'Nano Banana',
-      },
-      {
-        id: 5,
-        imageSrc: '/images/product-2.jpg',
-        prompt: 'A pair of wireless earbuds in a sleek, metallic charging case, placed on a wooden table. The background is blurred, creating a sense of depth. Commercial photography.',
-        category: 'Products',
-        generator: 'Flux',
-      },
-      {
-        id: 6,
-        imageSrc: '/images/portrait-2.jpg',
-        prompt: 'A close-up portrait of a woman with freckles, smiling gently. The lighting is soft and even, and the background is a neutral gray. Studio portrait.',
-        category: 'Portraits',
-        generator: 'ChatGPT',
-      },
-  ];
-  
-  export const categories = ['All', 'Fashion', 'Products', 'Portraits', 'Nano Banana', 'ChatGPT', 'Midjourney', 'Flux', 'Stable Diffusion'];
-  
-  export const generators = ['All', 'Nano Banana', 'ChatGPT', 'Midjourney', 'Flux', 'Stable Diffusion'];
+export const CATEGORY_METADATA = [
+  {
+    id: 'fantasy',
+    name: 'Fantasy',
+    description: 'Magical worlds and mythical creatures',
+    image: '/images/1.webp',
+    color: 'from-purple-500 to-pink-500',
+    tags: ['Magic', 'Dragons', 'Mystical'],
+  },
+  {
+    id: 'sci-fi',
+    name: 'Sci-Fi',
+    description: 'Futuristic and technological themes',
+    image: '/images/2.webp',
+    color: 'from-blue-500 to-cyan-500',
+    tags: ['Future', 'Tech', 'Space'],
+  },
+  {
+    id: 'nature',
+    name: 'Nature',
+    description: 'Landscapes and natural beauty',
+    image: '/images/3.webp',
+    color: 'from-green-500 to-emerald-500',
+    tags: ['Forest', 'Mountains', 'Ocean'],
+  },
+  {
+    id: 'abstract',
+    name: 'Abstract',
+    description: 'Creative and artistic expressions',
+    image: '/images/4.webp',
+    color: 'from-orange-500 to-red-500',
+    tags: ['Art', 'Colors', 'Patterns'],
+  },
+  {
+    id: 'portrait',
+    name: 'Portrait',
+    description: 'Characters and people',
+    image: '/images/5.webp',
+    color: 'from-pink-500 to-rose-500',
+    tags: ['People', 'Faces', 'Characters'],
+  },
+  {
+    id: 'architecture',
+    name: 'Architecture',
+    description: 'Buildings and structures',
+    image: '/images/6.webp',
+    color: 'from-gray-500 to-slate-500',
+    tags: ['Buildings', 'Cities', 'Design'],
+  },
+];
+
+export const GENERATOR_OPTIONS = [
+  { label: 'Midjourney', value: 'MIDJOURNEY' },
+  { label: 'DALL·E', value: 'DALLE' },
+  { label: 'Stable Diffusion', value: 'STABLE_DIFFUSION' },
+  { label: 'Flux', value: 'FLUX' },
+  { label: 'ChatGPT', value: 'CHAT_GPT' },
+  { label: 'Leonardo AI', value: 'LEONARDO_AI' },
+  { label: 'Adobe Firefly', value: 'ADOBE_FIREFLY' },
+];
+
+export const CATEGORY_OPTIONS = CATEGORY_METADATA.map((category) => category.name);
   

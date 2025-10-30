@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Visibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+enum GeneratorModel {
+  MIDJOURNEY
+  DALLE
+  STABLE_DIFFUSION
+  FLUX
+  CHAT_GPT
+  LEONARDO_AI
+  ADOBE_FIREFLY
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  avatar    String?
+  prompts   Prompt[]
+  likes     Like[]
+  saves     Save[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Prompt {
+  id              String          @id @default(cuid())
+  title           String
+  slug            String          @unique
+  visibility      Visibility      @default(PUBLIC)
+  category        String
+  model           GeneratorModel
+  promptText      String          @db.Text
+  negativePrompt  String?         @db.Text
+  
+  // Image metadata
+  imageUrl        String
+  imageKey        String
+  thumbnailUrl    String?
+  blurDataUrl     String?         @db.Text
+  width           Int?
+  height          Int?
+  aspectRatio     String          @default("4:5")
+  dominantColor   String?
+  
+  // Stats
+  likesCount      Int             @default(0)
+  savesCount      Int             @default(0)
+  viewsCount      Int             @default(0)
+  sharesCount     Int             @default(0)
+  
+  // Relations
+  createdById     String
+  createdBy       User            @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  tags            PromptTag[]
+  likes           Like[]
+  saves           Save[]
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([category, model])
+  @@index([createdAt])
+  @@index([slug])
+}
+
+model Tag {
+  id      String      @id @default(cuid())
+  name    String      @unique
+  slug    String      @unique
+  prompts PromptTag[]
+}
+
+model PromptTag {
+  promptId String
+  tagId    String
+  prompt   Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([promptId, tagId])
+}
+
+model Like {
+  userId    String
+  promptId  String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prompt    Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, promptId])
+  @@index([promptId])
+}
+
+model Save {
+  userId    String
+  promptId  String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prompt    Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, promptId])
+  @@index([promptId])
+}

@@ -53,6 +53,17 @@ const Header = () => {
               </li>
               <li className="ml-4 pl-4 border-l border-gray-200">
                 <Link 
+                  href="/add-prompt" 
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-5 py-2 rounded-full transition-all duration-200 text-sm font-medium hover:from-purple-700 hover:to-pink-700 shadow-md hover:shadow-lg hover:scale-105 transform"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  Add Prompt
+                </Link>
+              </li>
+              <li>
+                <Link 
                   href="#login" 
                   className="text-gray-600 hover:text-black px-4 py-2 rounded-full hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
                 >
@@ -118,6 +129,17 @@ const Header = () => {
               className="text-gray-600 hover:text-black px-4 py-3 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
             >
               About
+            </Link>
+            <div className="border-t border-gray-100 my-2"></div>
+            <Link 
+              href="/add-prompt" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-5 py-3 rounded-full transition-all duration-200 text-sm font-medium hover:from-purple-700 hover:to-pink-700 shadow-md"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Add Prompt
             </Link>
             <div className="border-t border-gray-100 my-2"></div>
             <Link 

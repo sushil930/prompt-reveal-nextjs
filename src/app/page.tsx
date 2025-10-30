@@ -1,13 +1,14 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PromptCard from '@/components/PromptCard';
-import { prompts } from '@/data';
+import { getAllPrompts } from '@/lib/prompts';
 
-export default function Home() {
+export default async function Home() {
+  const trendingPrompts = await getAllPrompts({ take: 20, sort: 'popular' });
+  const displayPrompts = trendingPrompts.slice(0, 15);
+
   return (
     <div className="bg-white text-black min-h-screen">
       <Header />
@@ -154,29 +155,59 @@ export default function Home() {
           </div>
           
           {/* Limited to 2 rows - showing 15 cards to fill 5 columns */}
-          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-5 2xl:columns-6 gap-6 space-y-6 mb-12">
-            {[...prompts, ...prompts, ...prompts].slice(0, 15).map((prompt, index) => (
-              <div
-                key={`${prompt.id}-${index}`}
-                className="break-inside-avoid animate-fadeInUp"
-                style={{
-                  animationDelay: `${index * 30}ms`,
-                  animationFillMode: 'both'
-                }}
+          {displayPrompts.length === 0 ? (
+            <div className="py-16 text-center text-gray-500 border border-dashed border-gray-200 rounded-3xl">
+              <p className="text-lg font-medium">No prompts yet. Add the first one to get things started!</p>
+              <Link
+                href="/add-prompt"
+                className="inline-flex mt-6 px-6 py-3 bg-black text-white rounded-full text-sm font-semibold hover:bg-gray-800 transition-all"
               >
-                <PromptCard {...prompt} />
-              </div>
-            ))}
-          </div>
+                Share a prompt
+              </Link>
+            </div>
+          ) : (
+            <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-5 2xl:columns-6 gap-6 space-y-6 mb-12">
+              {displayPrompts.map((prompt, index) => (
+                <div
+                  key={`${prompt.id}-${index}`}
+                  className="break-inside-avoid animate-fadeInUp"
+                  style={{
+                    animationDelay: `${index * 30}ms`,
+                    animationFillMode: 'both'
+                  }}
+                >
+                  <PromptCard
+                    id={prompt.id}
+                    title={prompt.title}
+                    prompt={prompt.prompt}
+                    negativePrompt={prompt.negativePrompt}
+                    category={prompt.category}
+                    generator={prompt.generator}
+                    imageSrc={prompt.imageSrc}
+                    fullImageSrc={prompt.imageUrl}
+                    blurDataUrl={prompt.blurDataUrl}
+                    likesCount={prompt.likesCount}
+                    savesCount={prompt.savesCount}
+                    viewsCount={prompt.viewsCount}
+                    tags={prompt.tags}
+                    createdAt={prompt.createdAt}
+                    createdBy={prompt.createdBy}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
 
-          {/* View More Button */}
-          <div className="text-center">
-            <Link href="/gallery">
-              <button className="px-8 py-4 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-all hover:shadow-lg hover:scale-105 transform duration-200">
-                View More Prompts
-              </button>
-            </Link>
-          </div>
+          {/* View More Button - only show when there are prompts */}
+          {displayPrompts.length > 0 && (
+            <div className="text-center">
+              <Link href="/gallery">
+                <button className="px-8 py-4 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-all hover:shadow-lg hover:scale-105 transform duration-200">
+                  View More Prompts
+                </button>
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
