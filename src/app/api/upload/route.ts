@@ -12,9 +12,45 @@ const ALLOWED_MIME_TYPES = [
 ];
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const BUCKET_NAME = process.env.SUPABASE_PROMPT_IMAGE_BUCKET ?? 'prompt-images';
+
+let bucketEnsured = false;
+
+async function ensureBucketExists() {
+  if (bucketEnsured) return;
+
+  try {
+    const { data } = await supabaseAdmin.storage.getBucket(BUCKET_NAME);
+
+    if (!data) {
+      const { error } = await supabaseAdmin.storage.createBucket(BUCKET_NAME, {
+        public: true,
+        fileSizeLimit: 52428800, // 50MB per file
+      });
+
+      if (error) {
+        console.error('Failed to create storage bucket:', error);
+        throw error;
+      }
+    }
+
+    bucketEnsured = true;
+  } catch (error) {
+    bucketEnsured = false;
+    throw error;
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error('Supabase environment variables are not configured.');
+      return NextResponse.json(
+        { error: 'Server storage is not configured. Please check Supabase credentials.' },
+        { status: 500 }
+      );
+    }
+
     const formData = await req.formData();
     const file = formData.get('file') as File;
 
@@ -64,9 +100,11 @@ export async function POST(req: NextRequest) {
       .toBuffer();
     const blurDataUrl = `data:image/webp;base64,${blurBuffer.toString('base64')}`;
 
+    await ensureBucketExists();
+
     // Upload original image to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabaseAdmin.storage
-      .from('prompt-images')
+  const { error: uploadError } = await supabaseAdmin.storage
+      .from(BUCKET_NAME)
       .upload(filePath, buffer, {
         contentType: file.type,
         upsert: false,
@@ -74,32 +112,52 @@ export async function POST(req: NextRequest) {
 
     if (uploadError) {
       console.error('Upload error:', uploadError);
-      return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+      
+      // Handle specific Supabase error types
+      let errorMessage = uploadError.message ?? 'Upload failed';
+      
+      if (uploadError.message?.includes('exceeded the maximum allowed size')) {
+        errorMessage = 'File is too large for storage. Please compress your image or use a smaller file.';
+      } else if (uploadError.message?.includes('InvalidBucketName')) {
+        errorMessage = 'Storage configuration error. Please try again later.';
+      } else if (uploadError.message?.includes('insufficient_scope')) {
+        errorMessage = 'Storage permissions error. Please contact support.';
+      }
+      
+      return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 
     // Upload thumbnail
     const thumbnailPath = `thumbnails/${fileName}`;
-    await supabaseAdmin.storage
-      .from('prompt-images')
+    const { error: thumbnailError } = await supabaseAdmin.storage
+      .from(BUCKET_NAME)
       .upload(thumbnailPath, thumbnailBuffer, {
         contentType: 'image/webp',
         upsert: false,
       });
 
+    if (thumbnailError) {
+      console.warn('Thumbnail upload failed:', thumbnailError);
+      // Continue without thumbnail - we'll use the original image
+    }
+
     // Get public URLs
     const { data: { publicUrl } } = supabaseAdmin.storage
-      .from('prompt-images')
+      .from(BUCKET_NAME)
       .getPublicUrl(filePath);
 
     const { data: { publicUrl: thumbnailUrl } } = supabaseAdmin.storage
-      .from('prompt-images')
+      .from(BUCKET_NAME)
       .getPublicUrl(thumbnailPath);
+
+    // Use original image URL if thumbnail upload failed
+    const finalThumbnailUrl = thumbnailError ? publicUrl : thumbnailUrl;
 
     return NextResponse.json({
       success: true,
       data: {
         url: publicUrl,
-        thumbnailUrl,
+        thumbnailUrl: finalThumbnailUrl,
         key: filePath,
         blurDataUrl,
         width: metadata.width,

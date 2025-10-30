@@ -56,13 +56,21 @@ export default async function Home() {
             
             {/* CTA Buttons - Modern minimal style */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button className="group relative px-6 py-3 bg-black text-white rounded-full text-sm font-medium overflow-hidden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl">
+              <Link
+                href="/gallery"
+                prefetch={true}
+                className="group relative inline-flex px-6 py-3 bg-black text-white rounded-full text-sm font-medium overflow-hidden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl"
+              >
                 <span className="relative z-10">Browse Gallery</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </button>
-              <button className="px-6 py-3 bg-transparent text-black border-2 border-black rounded-full text-sm font-medium hover:bg-black hover:text-white transition-all duration-300 shadow-md hover:shadow-lg">
-                Learn More
-              </button>
+              </Link>
+              <Link
+                href="/categories"
+                prefetch={true}
+                className="inline-flex px-6 py-3 bg-transparent text-black border-2 border-black rounded-full text-sm font-medium hover:bg-black hover:text-white transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                Explore Categories
+              </Link>
             </div>
             
             {/* Stats - Minimal */}
@@ -160,6 +168,7 @@ export default async function Home() {
               <p className="text-lg font-medium">No prompts yet. Add the first one to get things started!</p>
               <Link
                 href="/add-prompt"
+                prefetch={true}
                 className="inline-flex mt-6 px-6 py-3 bg-black text-white rounded-full text-sm font-semibold hover:bg-gray-800 transition-all"
               >
                 Share a prompt
@@ -201,7 +210,7 @@ export default async function Home() {
           {/* View More Button - only show when there are prompts */}
           {displayPrompts.length > 0 && (
             <div className="text-center">
-              <Link href="/gallery">
+              <Link href="/gallery" prefetch={true}>
                 <button className="px-8 py-4 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-all hover:shadow-lg hover:scale-105 transform duration-200">
                   View More Prompts
                 </button>

@@ -111,17 +111,6 @@ const PromptCard = ({
 
           {/* Bottom Content */}
           <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform transition-all duration-500" style={{ transform: isHovered ? 'translateY(0)' : 'translateY(30px)', opacity: isHovered ? 1 : 0 }}>
-            <h3 className="text-lg font-semibold leading-tight mb-2 drop-shadow-lg line-clamp-2">
-              {title}
-            </h3>
-            <p className="text-sm font-light leading-relaxed line-clamp-2 mb-4 drop-shadow-lg">
-              {prompt}
-            </p>
-            <p className="text-xs text-white/80 mb-4 drop-shadow-lg">
-              By {creatorName}
-              {createdAt ? ` · ${new Date(createdAt).toLocaleDateString()}` : ''}
-            </p>
-
             {/* Tags */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
               {metadataChips.map((chip) => (

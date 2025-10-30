@@ -29,7 +29,8 @@ const Header = () => {
             <ul className="flex items-center space-x-1">
               <li>
                 <Link 
-                  href="/gallery" 
+                  href="/gallery"
+                  prefetch={true}
                   className="text-gray-600 hover:text-black px-4 py-2 rounded-full hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
                 >
                   Gallery
@@ -37,7 +38,8 @@ const Header = () => {
               </li>
               <li>
                 <Link 
-                  href="/categories" 
+                  href="/categories"
+                  prefetch={true}
                   className="text-gray-600 hover:text-black px-4 py-2 rounded-full hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
                 >
                   Categories
@@ -53,7 +55,8 @@ const Header = () => {
               </li>
               <li className="ml-4 pl-4 border-l border-gray-200">
                 <Link 
-                  href="/add-prompt" 
+                  href="/add-prompt"
+                  prefetch={true}
                   className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-5 py-2 rounded-full transition-all duration-200 text-sm font-medium hover:from-purple-700 hover:to-pink-700 shadow-md hover:shadow-lg hover:scale-105 transform"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,14 +113,16 @@ const Header = () => {
         >
           <nav className="flex flex-col space-y-2 pb-4">
             <Link 
-              href="/gallery" 
+              href="/gallery"
+              prefetch={true}
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-gray-600 hover:text-black px-4 py-3 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
             >
               Gallery
             </Link>
             <Link 
-              href="/categories" 
+              href="/categories"
+              prefetch={true}
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-gray-600 hover:text-black px-4 py-3 rounded-lg hover:bg-gray-50 transition-all duration-200 text-sm font-medium"
             >
@@ -132,7 +137,8 @@ const Header = () => {
             </Link>
             <div className="border-t border-gray-100 my-2"></div>
             <Link 
-              href="/add-prompt" 
+              href="/add-prompt"
+              prefetch={true}
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-5 py-3 rounded-full transition-all duration-200 text-sm font-medium hover:from-purple-700 hover:to-pink-700 shadow-md"
             >

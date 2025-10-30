@@ -53,6 +53,7 @@ export default async function CategoriesPage() {
           <div className="text-center">
             <Link
               href="/"
+              prefetch={true}
               className="inline-flex items-center gap-2 text-gray-600 hover:text-black transition-colors mb-8 group"
             >
               <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
