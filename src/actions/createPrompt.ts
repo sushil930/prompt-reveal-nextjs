@@ -2,6 +2,7 @@
 import { revalidatePath } from 'next/cache';
 import type { GeneratorModel } from '@/lib/prompts';
 import { createPromptRecord } from '@/lib/prompts';
+import { GeneratorModel as PrismaGeneratorModel } from '@prisma/client';
 
 interface CreatePromptInput {
   title: string;
@@ -26,12 +27,18 @@ interface CreatePromptInput {
 
 export async function createPrompt(input: CreatePromptInput) {
   try {
+    // Defensive: ensure model is a valid Prisma enum value at runtime
+    const allowedModels = new Set<string>(Object.values(PrismaGeneratorModel));
+    const safeModel = (allowedModels.has(input.model as unknown as string)
+      ? input.model
+      : PrismaGeneratorModel.MIDJOURNEY) as GeneratorModel;
+
     const result = await createPromptRecord({
       title: input.title,
       promptText: input.promptText,
       negativePrompt: input.negativePrompt,
       category: input.category,
-      model: input.model,
+      model: safeModel,
       imageUrl: input.image.url,
       imageKey: input.image.key,
       thumbnailUrl: input.image.thumbnailUrl,
@@ -56,6 +63,7 @@ export async function createPrompt(input: CreatePromptInput) {
     return result;
   } catch (error) {
     console.error('Create prompt error:', error);
-    return { success: false, error: 'Failed to create prompt' };
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create prompt';
+    return { success: false, error: errorMessage };
   }
 }

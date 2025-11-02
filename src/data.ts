@@ -51,12 +51,23 @@ export const CATEGORY_METADATA = [
 
 export const GENERATOR_OPTIONS = [
   { label: 'Midjourney', value: 'MIDJOURNEY' },
+  { label: 'DALL·E 3', value: 'DALLE_3' },
   { label: 'DALL·E', value: 'DALLE' },
+  { label: 'Stable Diffusion XL', value: 'STABLE_DIFFUSION_XL' },
   { label: 'Stable Diffusion', value: 'STABLE_DIFFUSION' },
+  { label: 'Flux Pro', value: 'FLUX_PRO' },
+  { label: 'Flux Schnell', value: 'FLUX_SCHNELL' },
   { label: 'Flux', value: 'FLUX' },
-  { label: 'ChatGPT', value: 'CHAT_GPT' },
+  { label: 'Ideogram', value: 'IDEOGRAM' },
+  { label: 'Imagen 3', value: 'IMAGEN_3' },
+  { label: 'Recraft V3', value: 'RECRAFT_V3' },
   { label: 'Leonardo AI', value: 'LEONARDO_AI' },
   { label: 'Adobe Firefly', value: 'ADOBE_FIREFLY' },
+  { label: 'Playground AI', value: 'PLAYGROUND_AI' },
+  { label: 'Freepik AI', value: 'FREEPIK_AI' },
+  { label: 'Krea AI', value: 'KREA_AI' },
+  { label: 'ChatGPT', value: 'CHAT_GPT' },
+  { label: 'Nano Banana', value: 'NANOBANANA' },
 ];
 
 export const CATEGORY_OPTIONS = CATEGORY_METADATA.map((category) => category.name);

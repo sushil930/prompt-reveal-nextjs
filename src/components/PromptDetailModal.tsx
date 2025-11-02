@@ -186,7 +186,7 @@ const PromptDetailModal = ({
           </div>
 
           {/* Right Side - Details */}
-          <div className="flex flex-col overflow-y-auto p-8">
+          <div className="flex flex-col overflow-y-auto p-8 gap-0">
             {/* Category Badge */}
             <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-black/5 backdrop-blur-sm rounded-full text-xs font-medium text-gray-700 self-start">
               <span className="w-2 h-2 bg-black rounded-full" />
@@ -273,7 +273,7 @@ const PromptDetailModal = ({
             )}
 
             {/* Stats Section */}
-            <div className="grid grid-cols-3 gap-4 mb-6 pb-6 border-b border-gray-100">
+            <div className="grid grid-cols-3 gap-4 mb-4 pb-4 border-b border-gray-100">
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="text-2xl font-bold text-black mb-1">
@@ -285,7 +285,7 @@ const PromptDetailModal = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-3 mt-auto">
+            <div className="flex gap-3 pt-2 pb-4">
               <button className="flex-1 px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-all duration-200 hover:scale-105">
                 Try This Prompt
               </button>

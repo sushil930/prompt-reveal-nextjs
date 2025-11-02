@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ImageCropModal from '@/components/ImageCropModal';
 import { createPrompt } from '@/actions/createPrompt';
 import { CATEGORY_OPTIONS, GENERATOR_OPTIONS } from '@/data';
 import type { GeneratorModel } from '@/lib/prompts';
@@ -26,9 +27,12 @@ export default function AddPromptPage() {
   const [formState, setFormState] = useState(initialFormState);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [tempImageForCrop, setTempImageForCrop] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [uploadError, setUploadError] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Allowed file types
   const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
@@ -52,13 +56,30 @@ export default function AddPromptPage() {
       }
 
       setUploadError('');
-      setImageFile(file);
+      
+      // Read file and show crop modal
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        setTempImageForCrop(reader.result as string);
+        setShowCropModal(true);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleCropComplete = async (croppedBlob: Blob) => {
+    // Convert blob to File
+    const croppedFile = new File([croppedBlob], 'cropped-image.png', { type: 'image/png' });
+    setImageFile(croppedFile);
+    
+    // Generate preview from blob
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string);
+    };
+    reader.readAsDataURL(croppedBlob);
+    
+    setShowCropModal(false);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -224,6 +245,7 @@ export default function AddPromptPage() {
                         <p className="text-xs text-gray-500 mt-2">Recommended: 4:5 aspect ratio</p>
                       </div>
                       <input
+                        ref={fileInputRef}
                         type="file"
                         accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
                         onChange={handleImageChange}
@@ -414,6 +436,8 @@ export default function AddPromptPage() {
                   setImagePreview('');
                   setUploadError('');
                   setShowSuccess(false);
+                  setShowCropModal(false);
+                  setTempImageForCrop('');
                 }}
                 className="px-8 py-4 bg-gray-100 text-gray-700 rounded-full font-semibold hover:bg-gray-200 transition-all duration-300"
               >
@@ -440,6 +464,21 @@ export default function AddPromptPage() {
           </div>
         </div>
       )}
+
+      {/* Image Crop Modal */}
+      <ImageCropModal
+        isOpen={showCropModal && !!tempImageForCrop}
+        imageSrc={tempImageForCrop}
+        onCropComplete={handleCropComplete}
+        onClose={() => {
+          setShowCropModal(false);
+          setTempImageForCrop('');
+          // Reset file input when cancelled
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+          }
+        }}
+      />
 
       <Footer />
     </main>

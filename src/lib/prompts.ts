@@ -281,7 +281,10 @@ export async function createPromptRecord(data: {
 
     return { success: true, prompt: mapPromptToResponse(prompt) };
   } catch (error) {
+    // Improve diagnostics returned to the caller so UI can surface the root cause
+    const message =
+      error instanceof Error ? error.message : typeof error === 'string' ? error : 'Failed to create prompt';
     console.error('Error creating prompt:', error);
-    return { success: false, error: 'Failed to create prompt' };
+    return { success: false, error: message };
   }
 }
